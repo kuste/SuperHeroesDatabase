@@ -5,23 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import kustura.superheroesdatabase.apiServiceDto.Result;
 
@@ -31,11 +22,13 @@ public class MainActivity extends AppCompatActivity implements RecycleAdapter.It
     private Resources res;
     private RecycleAdapter recycleAdapter;
     private HttpApiService httpApiService;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title_layout);
+
 
     }
 
@@ -50,27 +43,27 @@ public class MainActivity extends AppCompatActivity implements RecycleAdapter.It
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clear:
-                ClearSearch();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.clear) {
+            ClearSearch();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search Heroes");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String query) {
                 doMySearch(query);
+                ClearSearchInput();
+
                 return false;
             }
 
@@ -92,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements RecycleAdapter.It
     }
 
     private void doMySearch(String query) {
+
         setContentView(R.layout.activity_main);
         res = getResources();
         RecyclerView recyclerView = findViewById(R.id.list);
@@ -101,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements RecycleAdapter.It
         recyclerView.setAdapter(recycleAdapter);
         CreateHttpService(recycleAdapter);
         httpApiService.execute(res.getString(R.string.apiUrl) + query);
+
     }
 
 
@@ -110,8 +105,14 @@ public class MainActivity extends AppCompatActivity implements RecycleAdapter.It
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("Result", item);
         startActivity(intent);
+        ClearSearchInput();
 
     }
 
+    private void ClearSearchInput() {
+        searchView.clearFocus();
+        searchView.setQuery("", false);
+
+    }
 
 }
