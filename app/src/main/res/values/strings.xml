@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Super Hero Database</string>
+    <string name="apiUrl">https://superheroapi.com/api/10217282323066074/search/</string>
+    <string name="intel">Intelligence</string>
+    <string name="str">Strength</string>
+    <string name="spe">Speed</string>
+    <string name="dur">Durability</string>
+    <string name="pow">Power</string>
+    <string name="com">Combat</string>
+    <string name="power_stats_text">Powerstats</string>
+    <string name="general_info">General Info</string>
+    <string name="gender">Gender</string>
+    <string name="race">Race</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="alignment">Alignment</string>
+    <string name="base">Base</string>
+    <string name="aliases">Aliases</string>
+    <string name="info_text">Search for Heroes</string>
+</resources>
